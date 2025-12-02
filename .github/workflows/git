@@ -1,0 +1,24 @@
+name: Deploy to Aliyun FC
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Function Compute
+        uses: aliyun/fc-deploy-action@v1
+        with:
+          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          region: ${{ secrets.ALIYUN_REGION }}
+          service: xhs-title-api
+          function: xhs-title-api
+          code-uri: ./
+          runtime: python3.10
+          handler: main.handler
